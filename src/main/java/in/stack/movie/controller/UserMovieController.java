@@ -6,7 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,31 +40,85 @@ public class UserMovieController {
 
 	// saving movie in User favorite list by movieId
 	@PostMapping("/{movieId}")
-	public User addMovieToFavs(@PathVariable("movieId") String movieId, HttpSession session) {
-		MovieSummary movieSummary = restTemplate.getForObject(
-				"https://api.themoviedb.org/3/movie/" + movieId + "?api_key=" + apiKey, MovieSummary.class);
-		Movie movie = new Movie(movieId, movieSummary.getTitle(), movieSummary.getOverview());
-		movieService.addmovie(movie);
-		User u = (User) session.getAttribute("user");
-		User user = userMovieService.getUser(u.getId());
-		List<Movie> favMovies = user.getFavoriteMovies();
-		favMovies.add(movie);
-		user.setFavoriteMovies(favMovies);
-		return userMovieService.addMovie(user.getId(), movieId);
+	public ResponseEntity<?> addMovieToFavs(@PathVariable("movieId") String movieId, HttpSession session) {
+
+		ResponseEntity<?> responseEntity = null;
+
+		try {
+
+			MovieSummary movieSummary = restTemplate.getForObject(
+					"https://api.themoviedb.org/3/movie/" + movieId + "?api_key=" + apiKey, MovieSummary.class);
+			Movie movie = new Movie(movieId, movieSummary.getTitle(), movieSummary.getOverview());
+			movieService.addmovie(movie);
+			User sessionUser = (User) session.getAttribute("user");
+			User user = userMovieService.getUser(sessionUser.getId());
+			List<Movie> favMovies = user.getFavoriteMovies();
+			favMovies.add(movie);
+			user.setFavoriteMovies(favMovies);
+			User userMovie = userMovieService.addMovie(user.getId(), movieId);
+			if (userMovie != null) {
+				responseEntity = new ResponseEntity<User>(userMovie, HttpStatus.OK);
+			} else {
+				responseEntity = new ResponseEntity<String>("Conflict Data", HttpStatus.CONFLICT);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return responseEntity;
+
 	}
 
 	// getting favorite movie list by userId
 	@GetMapping("/all")
-	public List<Movie> getMovies(HttpSession session) {
-		User user = (User) session.getAttribute("user");
-		return userMovieService.getMoviesbyUserId(user.getId());
+	public ResponseEntity<?> getMovies(HttpSession session) {
+
+		ResponseEntity<?> responseEntity = null;
+
+		try {
+
+			User user = (User) session.getAttribute("user");
+			List<Movie> movieList = userMovieService.getMoviesbyUserId(user.getId());
+			if (movieList != null) {
+				responseEntity = new ResponseEntity<List<Movie>>(movieList, HttpStatus.OK);
+			} else {
+				responseEntity = new ResponseEntity<String>("Conflict Data", HttpStatus.CONFLICT);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return responseEntity;
+
 	}
 
 	// deleting particular movie by movieId of particular user favorite list
 	@DeleteMapping("/{movieId}")
-	public Movie deleteByMovieIds(@PathVariable("movieId") String movieId, HttpSession session) {
-		User user1 = (User) session.getAttribute("user");
-		return userMovieService.deleteByMovieId(user1.getId(), movieId);
+	public ResponseEntity<?> deleteByMovieIds(@PathVariable("movieId") String movieId, HttpSession session) {
+
+		ResponseEntity<?> responseEntity = null;
+
+		try {
+
+			User user = (User) session.getAttribute("user");
+			Movie movie = userMovieService.deleteByMovieId(user.getId(), movieId);
+			if (movie != null) {
+				responseEntity = new ResponseEntity<Movie>(movie, HttpStatus.OK);
+			} else {
+				responseEntity = new ResponseEntity<String>("Conflict Data", HttpStatus.CONFLICT);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return responseEntity;
+
 	}
 
 }

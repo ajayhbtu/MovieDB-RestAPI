@@ -35,6 +35,7 @@ public class MovieController {
 	public ResponseEntity<?> getMovie(@PathVariable("movieId") String movieId) {
 
 		ResponseEntity<?> responseEntity = null;
+
 		try {
 
 			MovieSummary movieSummary = restTemplate.getForObject(
@@ -52,40 +53,104 @@ public class MovieController {
 		}
 
 		return responseEntity;
+
 	}
 
 	@GetMapping("/latest")
-	public Movie getLatestMovie() {
+	public ResponseEntity<?> getLatestMovie() {
 
-		MovieSummary movieSummary = restTemplate
-				.getForObject("https://api.themoviedb.org/3/movie/latest?api_key=" + apiKey, MovieSummary.class);
+		ResponseEntity<?> responseEntity = null;
 
-		return new Movie(movieSummary.getId(), movieSummary.getTitle(), movieSummary.getOverview());
+		try {
+
+			MovieSummary movieSummary = restTemplate
+					.getForObject("https://api.themoviedb.org/3/movie/latest?api_key=" + apiKey, MovieSummary.class);
+			if (movieSummary != null) {
+				Movie movie = new Movie(movieSummary.getId(), movieSummary.getTitle(), movieSummary.getOverview());
+				responseEntity = new ResponseEntity<Movie>(movie, HttpStatus.OK);
+			} else {
+				responseEntity = new ResponseEntity<String>("Conflict Data", HttpStatus.CONFLICT);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return responseEntity;
+
 	}
 
 	@GetMapping("/toprated/{pageNo}")
-	public MovieList getTopRatedMovies(@PathVariable("pageNo") int pageNo) {
+	public ResponseEntity<?> getTopRatedMovies(@PathVariable("pageNo") int pageNo) {
 
-		MovieList movieSummary = restTemplate.getForObject(
-				"https://api.themoviedb.org/3/movie/top_rated?api_key=" + apiKey + "&language=en-US&page=" + pageNo,
-				MovieList.class);
+		ResponseEntity<?> responseEntity = null;
 
-		return movieSummary;
+		try {
+
+			MovieList movieList = restTemplate.getForObject(
+					"https://api.themoviedb.org/3/movie/top_rated?api_key=" + apiKey + "&language=en-US&page=" + pageNo,
+					MovieList.class);
+			if (movieList != null) {
+				responseEntity = new ResponseEntity<MovieList>(movieList, HttpStatus.OK);
+			} else {
+				responseEntity = new ResponseEntity<String>("Conflict Data", HttpStatus.CONFLICT);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return responseEntity;
+
 	}
 
 	@GetMapping("/popular/{pageNo}")
-	public MovieList getPopularMovies(@PathVariable("pageNo") int pageNo) throws IOException {
+	public ResponseEntity<?> getPopularMovies(@PathVariable("pageNo") int pageNo) throws IOException {
 
-		MovieList movie = restTemplate.getForObject(
-				"https://api.themoviedb.org/3/movie/popular?api_key=" + apiKey + "&language=en-US&page=" + pageNo,
-				MovieList.class);
+		ResponseEntity<?> responseEntity = null;
 
-		return movie;
+		try {
+
+			MovieList movieList = restTemplate.getForObject(
+					"https://api.themoviedb.org/3/movie/popular?api_key=" + apiKey + "&language=en-US&page=" + pageNo,
+					MovieList.class);
+			if (movieList != null) {
+				responseEntity = new ResponseEntity<MovieList>(movieList, HttpStatus.OK);
+			} else {
+				responseEntity = new ResponseEntity<String>("Conflict Data", HttpStatus.CONFLICT);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return responseEntity;
+
 	}
 
 	@GetMapping("/all")
-	public List<Movie> getAllFavouriteMovies() {
+	public ResponseEntity<?> getAllFavouriteMovies() {
 
-		return movieService.getAllFavouriteMovies();
+		ResponseEntity<?> responseEntity = null;
+
+		try {
+
+			List<Movie> movieList = movieService.getAllFavouriteMovies();
+			if (movieList != null) {
+				responseEntity = new ResponseEntity<List<Movie>>(movieList, HttpStatus.OK);
+			} else {
+				responseEntity = new ResponseEntity<String>("Conflict Data", HttpStatus.CONFLICT);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return responseEntity;
+
 	}
 }

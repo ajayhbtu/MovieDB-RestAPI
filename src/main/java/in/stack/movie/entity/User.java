@@ -29,6 +29,9 @@ public class User {
 
 	private Date createdAt = new Date();
 
+	@Column(nullable = true, length = 64)
+	private String profilePhoto;
+
 	@ManyToMany
 	private List<Movie> favoriteMovies = new ArrayList<>();
 
@@ -70,6 +73,14 @@ public class User {
 
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public String getProfilePhoto() {
+		return profilePhoto;
+	}
+
+	public void setProfilePhoto(String imagePath) {
+		this.profilePhoto = imagePath;
 	}
 
 	public List<Movie> getFavoriteMovies() {

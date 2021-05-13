@@ -38,7 +38,13 @@ public class UserMovieService {
 		User user = userRepository.findById(userId);
 		List<Movie> movies = user.getFavoriteMovies();
 		Movie movie = movieRepository.findById(movieId).orElse(null);
-		movies.remove(movie);
+
+		if (movie != null && movies.contains(movie)) {
+			movies.remove(movie);
+		} else {
+			movie = null;
+		}
+
 		user.setFavoriteMovies(movies);
 		userRepository.save(user);
 		return movie;

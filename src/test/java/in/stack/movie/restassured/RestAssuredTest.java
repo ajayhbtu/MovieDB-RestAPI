@@ -11,11 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import in.stack.movie.entity.AuthenticationRequest;
 import in.stack.movie.entity.User;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.config.SessionConfig;
-import io.restassured.filter.session.SessionFilter;
+
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
@@ -247,46 +244,180 @@ public class RestAssuredTest {
 		assertEquals(200, response1.statusCode());
 		assertNotNull(response1.jsonPath().getString("movieId"));
 		assertNotNull(response1.jsonPath().getString("name"));
-		assertNotNull(response1.jsonPath().getString("description"));  
-		assertEquals(500, response1.statusCode());
+		assertNotNull(response1.jsonPath().getString("description"));
 
 	}
 
 	@Test
-	@Order(13)
-	public void testAddMovies() throws Exception {
+	@Order(12)
+	public void negativeTestGetLatestMovies() throws Exception {
 
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
 		endpoint = "authenticate";
 
-		SessionFilter sessionFilter = new SessionFilter();
-		Response response = given().auth().digest("user", "pass").contentType("application/json").filter(sessionFilter).expect().statusCode(200).when()
+		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
-
-//		RequestSpecification spec = new RequestSpecBuilder().setSessionId("45678").build();
-//		config = config().sessionConfig(new SessionConfig().sessionIdName("phpsessionid"));
-
-//		Response response = given().auth().form("user", "pass").filter(sessionFilter).contentType("application/json")
-//				.body(authenticationRequest).when().post(baseUrl + endpoint).then().extract().response();
-//		assertEquals(200, response.statusCode());
+		assertEquals(200, response.statusCode());
 
 		String jwt = response.jsonPath().getString("jwt");
+		endpoint = "api/movies/latests";
+
+		Response response1 = given().header("Authorization", "Bearer " + jwt).when().get(baseUrl + endpoint).then()
+				.extract().response();
+		assertEquals(500, response1.statusCode());
+
+	}
+
+	@Test
+	@Order(13)
+	public void positiveTestAddFavoriteMovies() throws Exception {
+
+		authenticationRequest = new AuthenticationRequest();
+		authenticationRequest.setUsername("user");
+		authenticationRequest.setPassword("pass");
+		endpoint = "authenticate";
+
+		Response response = given().contentType("application/json").body(authenticationRequest).when()
+				.post(baseUrl + endpoint).then().extract().response();
+		assertEquals(200, response.statusCode());
+
+		String jwt = response.jsonPath().getString("jwt");
+		String sessionId = response.sessionId();
 		String movieId = "2";
 		endpoint = "favorites/" + movieId;
 
-		Response response1 = given().filter(sessionFilter).header("Authorization", "Bearer " + jwt).contentType("application/json").when()
-				.post(baseUrl + endpoint).then().extract().response();
+		Response response1 = given().header("Authorization", "Bearer " + jwt).contentType("application/json")
+				.sessionId(sessionId).when().post(baseUrl + endpoint).then().extract().response();
 		assertEquals(200, response1.statusCode());
-		assertNotNull(response1.jsonPath().getString("movieId"));
-		assertNotNull(response1.jsonPath().getString("name"));
-		assertNotNull(response1.jsonPath().getString("description"));
+		assertEquals("user", response1.jsonPath().getString("username"));
+		assertNotNull(response1.jsonPath().getString("username"));
+		assertTrue(response1.jsonPath().getList("favoriteMovies").size() == 1);
 
 	}
 
 	@Test
 	@Order(14)
+	public void negativeTestAddFavoriteMovies() throws Exception {
+
+		authenticationRequest = new AuthenticationRequest();
+		authenticationRequest.setUsername("user");
+		authenticationRequest.setPassword("pass");
+		endpoint = "authenticate";
+
+		Response response = given().contentType("application/json").body(authenticationRequest).when()
+				.post(baseUrl + endpoint).then().extract().response();
+		assertEquals(200, response.statusCode());
+
+		String jwt = response.jsonPath().getString("jwt");
+		String movieId = "2";
+		endpoint = "favorites/" + movieId;
+
+		Response response1 = given().header("Authorization", "Bearer " + jwt).contentType("application/json").when()
+				.post(baseUrl + endpoint).then().extract().response();
+		assertEquals(500, response1.statusCode());
+
+	}
+
+	@Test
+	@Order(15)
+	public void positiveTestGetFavoriteMovies() throws Exception {
+
+		authenticationRequest = new AuthenticationRequest();
+		authenticationRequest.setUsername("user");
+		authenticationRequest.setPassword("pass");
+		endpoint = "authenticate";
+
+		Response response = given().contentType("application/json").body(authenticationRequest).when()
+				.post(baseUrl + endpoint).then().extract().response();
+		assertEquals(200, response.statusCode());
+
+		String jwt = response.jsonPath().getString("jwt");
+		String sessionId = response.sessionId();
+		endpoint = "favorites/all";
+
+		Response response1 = given().header("Authorization", "Bearer " + jwt).sessionId(sessionId).when()
+				.get(baseUrl + endpoint).then().extract().response();
+		assertEquals(200, response1.statusCode());
+		assertTrue(response1.jsonPath().getList("movies").size() == 1);
+
+	}
+
+	@Test
+	@Order(16)
+	public void negativeTestGetFavoriteMovies() throws Exception {
+
+		authenticationRequest = new AuthenticationRequest();
+		authenticationRequest.setUsername("user");
+		authenticationRequest.setPassword("pass");
+		endpoint = "authenticate";
+
+		Response response = given().contentType("application/json").body(authenticationRequest).when()
+				.post(baseUrl + endpoint).then().extract().response();
+		assertEquals(200, response.statusCode());
+
+		String jwt = response.jsonPath().getString("jwt");
+		String sessionId = response.sessionId();
+		endpoint = "favourite/alls";
+
+		Response response1 = given().header("Authorization", "Bearer " + jwt).sessionId(sessionId).when()
+				.get(baseUrl + endpoint).then().extract().response();
+		assertEquals(404, response1.statusCode());
+
+	}
+
+	@Test
+	@Order(17)
+	public void positiveTestDeleteMovies() throws Exception {
+
+		authenticationRequest = new AuthenticationRequest();
+		authenticationRequest.setUsername("user");
+		authenticationRequest.setPassword("pass");
+		endpoint = "authenticate";
+
+		Response response = given().contentType("application/json").body(authenticationRequest).when()
+				.post(baseUrl + endpoint).then().extract().response();
+		assertEquals(200, response.statusCode());
+
+		String jwt = response.jsonPath().getString("jwt");
+		String sessionId = response.sessionId();
+		String movieId = "2";
+		endpoint = "favorites/" + movieId;
+
+		Response response1 = given().header("Authorization", "Bearer " + jwt).sessionId(sessionId).when()
+				.delete(baseUrl + endpoint).then().extract().response();
+		assertEquals(200, response1.statusCode());
+		assertEquals("Ariel", response1.jsonPath().getString("name"));
+
+	}
+
+	@Test
+	@Order(18)
+	public void negativeTestDeleteMovies() throws Exception {
+
+		authenticationRequest = new AuthenticationRequest();
+		authenticationRequest.setUsername("user");
+		authenticationRequest.setPassword("pass");
+		endpoint = "authenticate";
+
+		Response response = given().contentType("application/json").body(authenticationRequest).when()
+				.post(baseUrl + endpoint).then().extract().response();
+		assertEquals(200, response.statusCode());
+
+		String jwt = response.jsonPath().getString("jwt");
+		String sessionId = response.sessionId();
+		String movieId = "2";
+		endpoint = "favorites/" + movieId;
+
+		Response response1 = given().header("Authorization", "Bearer " + jwt).sessionId(sessionId).when()
+				.delete(baseUrl + endpoint).then().extract().response();
+		assertEquals(409, response1.statusCode());
+
+	}
+
+	@Test
+	@Order(19)
 	public void positiveTestDeleteUser() throws Exception {
 
 		authenticationRequest = new AuthenticationRequest();
@@ -309,7 +440,7 @@ public class RestAssuredTest {
 	}
 
 	@Test
-	@Order(15)
+	@Order(20)
 	public void negativeTestDeleteUser() throws Exception {
 
 		authenticationRequest = new AuthenticationRequest();

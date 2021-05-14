@@ -21,9 +21,11 @@ import in.stack.movie.entity.MovieSummary;
 import in.stack.movie.entity.User;
 import in.stack.movie.service.MovieService;
 import in.stack.movie.service.UserMovieService;
+import io.swagger.annotations.Api;
 
 @RestController
 @RequestMapping("/favorites")
+@Api(value="User Movies Service", description="User movies micro service")
 public class UserMovieController {
 
 	@Value("${api.key}")

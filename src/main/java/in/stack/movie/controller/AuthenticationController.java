@@ -33,8 +33,10 @@ import in.stack.movie.service.MovieUserDetailsService;
 import in.stack.movie.service.UserMovieService;
 import in.stack.movie.util.FileUploadUtil;
 import in.stack.movie.util.JwtUtil;
+import io.swagger.annotations.Api;
 
 @RestController
+@Api(value="Authentication Service", description="Authentication micro service")
 public class AuthenticationController {
 
 	@Autowired

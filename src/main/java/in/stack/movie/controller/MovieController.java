@@ -17,9 +17,11 @@ import in.stack.movie.entity.Movie;
 import in.stack.movie.entity.MovieList;
 import in.stack.movie.entity.MovieSummary;
 import in.stack.movie.service.MovieService;
+import io.swagger.annotations.Api;
 
 @RestController
 @RequestMapping("api/movies")
+@Api(value="Movie Service", description="Movie micro service")
 public class MovieController {
 
 	@Value("${api.key}")

@@ -136,6 +136,12 @@
 				<configuration>
 					<systemPropertyVariables>
 						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+
+						<excludes>
+							<exclude>in/stack/movie/MovieDbRestApiApplication.class</exclude>
+							<exclude>in/stack/movie/util/FileUploadUtil.class</exclude>
+						</excludes>
+
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>

@@ -94,7 +94,7 @@ public class UserMovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -111,7 +111,7 @@ public class UserMovieControllerTest {
 		Mockito.when(userMovieService.addMovie(ArgumentMatchers.anyInt(), ArgumentMatchers.anyString()))
 				.thenReturn(user);
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/favorites/" + movie.getMovieId())
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/favorites/" + movie.getMovieId())
 				.header("Authorization", "Bearer " + jwt).sessionAttr("user", user)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.favoriteMovies[0].name", Matchers.equalTo("Ariel")));
 
@@ -133,7 +133,7 @@ public class UserMovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -149,7 +149,7 @@ public class UserMovieControllerTest {
 		Mockito.when(userMovieService.addMovie(ArgumentMatchers.anyInt(), ArgumentMatchers.anyString()))
 				.thenReturn(user);
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/favorites/" + movie.getMovieId())
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/favorites/" + movie.getMovieId())
 				.header("Authorization", "Bearers " + jwt).sessionAttr("user", user)).andExpect(status().isForbidden());
 
 	}
@@ -170,7 +170,7 @@ public class UserMovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -186,7 +186,7 @@ public class UserMovieControllerTest {
 		Mockito.when(userMovieService.addMovie(ArgumentMatchers.anyInt(), ArgumentMatchers.anyString()))
 				.thenReturn(null);
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/favorites/" + movie.getMovieId())
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/favorites/" + movie.getMovieId())
 				.header("Authorization", "Bearer " + jwt).sessionAttr("user", user)).andExpect(status().isConflict())
 				.andReturn();
 
@@ -208,7 +208,7 @@ public class UserMovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -223,7 +223,7 @@ public class UserMovieControllerTest {
 		Mockito.when(userMovieService.getMoviesbyUserId(ArgumentMatchers.anyInt()))
 				.thenReturn(user.getFavoriteMovies());
 
-		mockMvc.perform(get("/favorites/all").header("Authorization", "Bearer " + jwt).sessionAttr("user", user))
+		mockMvc.perform(get("/api/favorites/all").header("Authorization", "Bearer " + jwt).sessionAttr("user", user))
 				.andExpect(status().isOk()).andExpect(jsonPath("$[0].name", Matchers.equalTo("Ariel")));
 
 	}
@@ -244,7 +244,7 @@ public class UserMovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -258,7 +258,7 @@ public class UserMovieControllerTest {
 
 		Mockito.when(userMovieService.getMoviesbyUserId(ArgumentMatchers.anyInt())).thenReturn(null);
 
-		mockMvc.perform(get("/favorites/all").header("Authorization", "Bearer " + jwt).sessionAttr("user", user))
+		mockMvc.perform(get("/api/favorites/all").header("Authorization", "Bearer " + jwt).sessionAttr("user", user))
 				.andExpect(status().isConflict()).andReturn();
 
 	}
@@ -279,7 +279,7 @@ public class UserMovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -293,7 +293,7 @@ public class UserMovieControllerTest {
 
 		Mockito.when(userMovieService.getMoviesbyUserId(ArgumentMatchers.anyInt())).thenReturn(null);
 
-		mockMvc.perform(get("/favorites/all").header("Authorization", "Bearers " + jwt).sessionAttr("user", user))
+		mockMvc.perform(get("/api/favorites/all").header("Authorization", "Bearers " + jwt).sessionAttr("user", user))
 				.andExpect(status().isForbidden());
 
 	}
@@ -314,7 +314,7 @@ public class UserMovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -326,7 +326,7 @@ public class UserMovieControllerTest {
 		Mockito.when(userMovieService.deleteByMovieId(ArgumentMatchers.anyInt(), ArgumentMatchers.anyString()))
 				.thenReturn(movie);
 
-		mockMvc.perform(MockMvcRequestBuilders.delete("/favorites/" + movie.getMovieId())
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/favorites/" + movie.getMovieId())
 				.header("Authorization", "Bearer " + jwt).sessionAttr("user", user)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.name", Matchers.equalTo("Ariel")));
 
@@ -348,7 +348,7 @@ public class UserMovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -360,7 +360,7 @@ public class UserMovieControllerTest {
 		Mockito.when(userMovieService.deleteByMovieId(ArgumentMatchers.anyInt(), ArgumentMatchers.anyString()))
 				.thenReturn(movie);
 
-		mockMvc.perform(MockMvcRequestBuilders.delete("/favorites/" + movie.getMovieId())
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/favorites/" + movie.getMovieId())
 				.header("Authorization", "Bearers " + jwt).sessionAttr("user", user)).andExpect(status().isForbidden());
 
 	}
@@ -381,7 +381,7 @@ public class UserMovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -392,7 +392,7 @@ public class UserMovieControllerTest {
 
 		Mockito.when(userMovieService.deleteByMovieId(ArgumentMatchers.anyInt(), ArgumentMatchers.anyString()))
 				.thenReturn(null);
-		mockMvc.perform(MockMvcRequestBuilders.delete("/favorites/" + movie.getMovieId())
+		mockMvc.perform(MockMvcRequestBuilders.delete("/api/favorites/" + movie.getMovieId())
 				.header("Authorization", "Bearer " + jwt).sessionAttr("user", user)).andExpect(status().isConflict())
 				.andReturn();
 

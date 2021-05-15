@@ -67,7 +67,7 @@ public class AuthenticationControllerTest {
 
 		Mockito.when(movieUserDetailsService.saveUser(ArgumentMatchers.any())).thenReturn(user);
 		String json_content = mapper.writeValueAsString(user);
-		mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+		mockMvc.perform(post("/api/user/register").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 				.content(json_content).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.username", Matchers.equalTo("user")));
 
@@ -77,7 +77,7 @@ public class AuthenticationControllerTest {
 	public void negativeTestRegisterUser() throws Exception {
 
 		Mockito.when(movieUserDetailsService.saveUser(ArgumentMatchers.any())).thenReturn(user);
-		mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+		mockMvc.perform(post("/api/user/register").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 				.accept(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
 
 	}
@@ -96,7 +96,7 @@ public class AuthenticationControllerTest {
 		Mockito.when(userRepository.findByUsername(ArgumentMatchers.anyString())).thenReturn(user);
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 		
-		mockMvc.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+		mockMvc.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 				.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue()))
 				.andExpect(status().isOk());
@@ -117,7 +117,7 @@ public class AuthenticationControllerTest {
 		Mockito.when(userRepository.findByUsername(ArgumentMatchers.anyString())).thenReturn(user);
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
-		mockMvc.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+		mockMvc.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 				.content(json_content).accept(MediaType.APPLICATION_JSON)).andExpect(status().isForbidden());
 
 	}

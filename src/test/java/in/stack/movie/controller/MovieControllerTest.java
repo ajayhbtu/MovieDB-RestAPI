@@ -84,7 +84,7 @@ public class MovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -113,7 +113,7 @@ public class MovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -140,7 +140,7 @@ public class MovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -170,7 +170,7 @@ public class MovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 
@@ -200,7 +200,7 @@ public class MovieControllerTest {
 		Mockito.when(movieUserDetailsService.loadUserByUsername(ArgumentMatchers.anyString())).thenReturn(userDetails);
 
 		MvcResult result = mockMvc
-				.perform(post("/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+				.perform(post("/api/user/authenticate").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
 						.content(json_content).accept(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.jwt", Matchers.notNullValue())).andExpect(status().isOk()).andReturn();
 

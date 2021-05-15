@@ -28,7 +28,7 @@ public class RestAssuredTest {
 	@Order(1)
 	public void positiveTestRegisterUser() throws Exception {
 
-		endpoint = "register";
+		endpoint = "api/user/register";
 		user = new User();
 		user.setUsername("user");
 		user.setPassword("pass");
@@ -47,7 +47,7 @@ public class RestAssuredTest {
 	@Order(2)
 	public void negativeTestRegisterUser() throws Exception {
 
-		endpoint = "register";
+		endpoint = "api/user/register";
 		user = new User();
 		user.setUsername("user");
 		user.setPassword("pass");
@@ -66,7 +66,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -82,7 +82,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass1");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -97,7 +97,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
 		assertEquals(200, response.statusCode());
@@ -120,7 +120,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
 		assertEquals(200, response.statusCode());
@@ -142,7 +142,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -164,7 +164,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -186,7 +186,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -208,7 +208,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -230,7 +230,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -255,7 +255,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -277,7 +277,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -286,7 +286,7 @@ public class RestAssuredTest {
 		String jwt = response.jsonPath().getString("jwt");
 		String sessionId = response.sessionId();
 		String movieId = "2";
-		endpoint = "favorites/" + movieId;
+		endpoint = "api/favorites/" + movieId;
 
 		Response response1 = given().header("Authorization", "Bearer " + jwt).contentType("application/json")
 				.sessionId(sessionId).when().post(baseUrl + endpoint).then().extract().response();
@@ -304,7 +304,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -312,7 +312,7 @@ public class RestAssuredTest {
 
 		String jwt = response.jsonPath().getString("jwt");
 		String movieId = "2";
-		endpoint = "favorites/" + movieId;
+		endpoint = "api/favorites/" + movieId;
 
 		Response response1 = given().header("Authorization", "Bearer " + jwt).contentType("application/json").when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -327,7 +327,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -335,7 +335,7 @@ public class RestAssuredTest {
 
 		String jwt = response.jsonPath().getString("jwt");
 		String sessionId = response.sessionId();
-		endpoint = "favorites/all";
+		endpoint = "api/favorites/all";
 
 		Response response1 = given().header("Authorization", "Bearer " + jwt).sessionId(sessionId).when()
 				.get(baseUrl + endpoint).then().extract().response();
@@ -351,7 +351,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -359,7 +359,7 @@ public class RestAssuredTest {
 
 		String jwt = response.jsonPath().getString("jwt");
 		String sessionId = response.sessionId();
-		endpoint = "favourite/alls";
+		endpoint = "api/favourite/alls";
 
 		Response response1 = given().header("Authorization", "Bearer " + jwt).sessionId(sessionId).when()
 				.get(baseUrl + endpoint).then().extract().response();
@@ -374,7 +374,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -383,7 +383,7 @@ public class RestAssuredTest {
 		String jwt = response.jsonPath().getString("jwt");
 		String sessionId = response.sessionId();
 		String movieId = "2";
-		endpoint = "favorites/" + movieId;
+		endpoint = "api/favorites/" + movieId;
 
 		Response response1 = given().header("Authorization", "Bearer " + jwt).sessionId(sessionId).when()
 				.delete(baseUrl + endpoint).then().extract().response();
@@ -399,7 +399,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
@@ -408,7 +408,7 @@ public class RestAssuredTest {
 		String jwt = response.jsonPath().getString("jwt");
 		String sessionId = response.sessionId();
 		String movieId = "2";
-		endpoint = "favorites/" + movieId;
+		endpoint = "api/favorites/" + movieId;
 
 		Response response1 = given().header("Authorization", "Bearer " + jwt).sessionId(sessionId).when()
 				.delete(baseUrl + endpoint).then().extract().response();
@@ -423,14 +423,14 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();
 		assertEquals(200, response.statusCode());
 
 		String jwt = response.jsonPath().getString("jwt");
-		endpoint = "delete/" + userId;
+		endpoint = "api/user/delete/" + userId;
 
 		Response response1 = given().header("Authorization", "Bearer " + jwt).when().delete(baseUrl + endpoint).then()
 				.extract().response();
@@ -446,7 +446,7 @@ public class RestAssuredTest {
 		authenticationRequest = new AuthenticationRequest();
 		authenticationRequest.setUsername("user");
 		authenticationRequest.setPassword("pass");
-		endpoint = "authenticate";
+		endpoint = "api/user/authenticate";
 
 		Response response = given().contentType("application/json").body(authenticationRequest).when()
 				.post(baseUrl + endpoint).then().extract().response();

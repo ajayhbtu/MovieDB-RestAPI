@@ -1,5 +1,8 @@
 package in.stack.movie.entity;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description = "Details sent during the Authentication")
 public class AuthenticationRequest {
 
 	private String username;

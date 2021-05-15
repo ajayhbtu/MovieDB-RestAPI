@@ -13,18 +13,18 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-public class MovieDbDocsConfig {
+public class MovieDbSwaggerDocsConfig {
 
 	@Bean
-	public Docket postApi() {
+	public Docket movieDbApi() {
 		return new Docket(DocumentationType.SWAGGER_2).groupName("Stackroute SDET").apiInfo(apiInfo()).select()
 				.paths(regex("/api.*")).build();
 	}
 
 	private ApiInfo apiInfo() {
 
-		return new ApiInfoBuilder().title("MovieDB-RestAPI").description("simple moviedb rest app")
-				.termsOfServiceUrl("All rights reserved").license("SDET Group Licence").version("1.0").build();
+		return new ApiInfoBuilder().title("MovieDB-RestAPI").description("MovieDB Rest App")
+				.termsOfServiceUrl("All Rights Reserved").license("SDET Group Licence").version("1.0").build();
 
 	}
 

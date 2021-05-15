@@ -1,5 +1,8 @@
 package in.stack.movie.entity;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description = "Details about User Details provided by User Details Service")
 public class MovieUserDetails {
 
 	private String username;

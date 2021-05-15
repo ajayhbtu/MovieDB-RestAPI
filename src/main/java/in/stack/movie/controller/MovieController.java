@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,9 @@ import in.stack.movie.service.MovieService;
 import io.swagger.annotations.Api;
 
 @RestController
-@RequestMapping("api/movies")
-@Api(value="Movie Service", description="Movie micro service")
+@CrossOrigin(origins = "http://localhost:8080")
+@RequestMapping("/api/movies")
+@Api(value="Movie Service", description="Movie Services")
 public class MovieController {
 
 	@Value("${api.key}")

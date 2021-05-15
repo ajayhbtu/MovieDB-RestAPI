@@ -14,6 +14,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,9 @@ import in.stack.movie.util.JwtUtil;
 import io.swagger.annotations.Api;
 
 @RestController
-@Api(value="Authentication Service", description="Authentication micro service")
+@CrossOrigin(origins = "http://localhost:8080")
+@RequestMapping("/api/user")
+@Api(value="Authentication Service", description="Authentication Services")
 public class AuthenticationController {
 
 	@Autowired
